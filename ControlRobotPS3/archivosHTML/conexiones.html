@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esquema de Conexiones - Robot Arduino</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.5;
+      color: #2d3748;
+      background-color: #f7fafc;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #1a365d;
+      border-bottom: 3px solid #3182ce;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    h2 {
+      color: #2b6cb0;
+      margin-top: 25px;
+      border-left: 4px solid #3182ce;
+      padding-left: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background-color: #ebf8ff;
+      color: #2c5282;
+      font-weight: 600;
+    }
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    ul {
+      margin-top: 5px;
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .warning {
+      background-color: #fffaf0;
+      border: 1px solid #feebc8;
+      border-left: 5px solid #dd6b20;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 25px;
+    }
+    .warning h3 {
+      margin-top: 0;
+      color: #c05621;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Esquema de Conexiones del Robot Arduino</h1>
+    <p>Guía de cableado e interconexión de componentes para el robot diferencial de combate con control Bluetooth y modos autónomos.</p>
+
+    <h2>1. Alimentación y Masa Común (GND)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Componente</th>
+          <th>Origen / Destino</th>
+          <th>Notas / Recomendación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Batería (+ Positive)</b></td>
+          <td>Pin 12V / VIN de L298N</td>
+          <td>Alimentación principal para los motores (7.4V - 12V).</td>
+        </tr>
+        <tr>
+          <td><b>Batería (- Negative)</b></td>
+          <td>Riel GND principal en Protoboard</td>
+          <td>Masa común general del circuito.</td>
+        </tr>
+        <tr>
+          <td><b>Arduino GND</b></td>
+          <td>Riel GND en Protoboard</td>
+          <td>Es indispensable unir todos los GND (Arduino, L298N, Batería y Sensores).</td>
+        </tr>
+        <tr>
+          <td><b>L298N 5V Out</b></td>
+          <td>Riel 5V en Protoboard</td>
+          <td>Alimenta el Arduino y los sensores de bajo consumo (con jumper de regulador puesto).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2. Driver de Potencia L298N (Control de Motores)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Pin L298N</th>
+          <th>Pin Arduino UNO</th>
+          <th>Función</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>ENA</b></td>
+          <td>Pin 5 (PWM)</td>
+          <td>Control de Velocidad Motor Derecho</td>
+        </tr>
+        <tr>
+          <td><b>IN1</b></td>
+          <td>Pin 6</td>
+          <td>Dirección Motor Derecho (Avanzar)</td>
+        </tr>
+        <tr>
+          <td><b>IN2</b></td>
+          <td>Pin 7</td>
+          <td>Dirección Motor Derecho (Retroceder)</td>
+        </tr>
+        <tr>
+          <td><b>IN3</b></td>
+          <td>Pin 8</td>
+          <td>Dirección Motor Izquierdo (Retroceder)</td>
+        </tr>
+        <tr>
+          <td><b>IN4</b></td>
+          <td>Pin 9</td>
+          <td>Dirección Motor Izquierdo (Avanzar)</td>
+        </tr>
+        <tr>
+          <td><b>ENB</b></td>
+          <td>Pin 10 (PWM)</td>
+          <td>Control de Velocidad Motor Izquierdo</td>
+        </tr>
+        <tr>
+          <td><b>OUT1 / OUT2</b></td>
+          <td>Motor DC Derecho</td>
+          <td>Conexión directa a bornes del motor derecho</td>
+        </tr>
+        <tr>
+          <td><b>OUT3 / OUT4</b></td>
+          <td>Motor DC Izquierdo</td>
+          <td>Conexión directa a bornes del motor izquierdo</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Módulo Bluetooth HC-05 (Receptor Serial)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Pin HC-05</th>
+          <th>Conexión en Robot</th>
+          <th>Notas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>VCC</b></td>
+          <td>Riel 5V (Protoboard)</td>
+          <td>Alimentación a 5V</td>
+        </tr>
+        <tr>
+          <td><b>GND</b></td>
+          <td>Riel GND (Protoboard)</td>
+          <td>Masa común</td>
+        </tr>
+        <tr>
+          <td><b>TX</b></td>
+          <td>Pin 0 (RX) de Arduino</td>
+          <td>Transmisión de datos hacia el Arduino</td>
+        </tr>
+        <tr>
+          <td><b>RX</b></td>
+          <td>Pin 1 (TX) de Arduino</td>
+          <td><b>Desconectar los pines 0 y 1 al subir código al Arduino.</b></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>4. LEDs Indicadores de Modo de Juego</h2>
+    <ul>
+      <li><b>LED Modo 1 (Manual):</b> Conectado al <b>Pin 2</b> de Arduino &rarr; Resistencia 220 &Omega; &rarr; GND</li>
+      <li><b>LED Modo 2 (Ultrasonido):</b> Conectado al <b>Pin 3</b> de Arduino &rarr; Resistencia 220 &Omega; &rarr; GND</li>
+      <li><b>LED Modo 3 (Seguidor de Línea):</b> Conectado al <b>Pin 4</b> de Arduino &rarr; Resistencia 220 &Omega; &rarr; GND</li>
+    </ul>
+
+    <h2>5. Sensor Ultrasonido HC-SR04 (Modo 2 - Evitación)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Pin HC-SR04</th>
+          <th>Conexión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>VCC</b></td>
+          <td>Riel 5V (Protoboard)</td>
+        </tr>
+        <tr>
+          <td><b>GND</b></td>
+          <td>Riel GND (Protoboard)</td>
+        </tr>
+        <tr>
+          <td><b>TRIG</b></td>
+          <td>Pin 11 del Arduino</td>
+        </tr>
+        <tr>
+          <td><b>ECHO</b></td>
+          <td>Pin 12 del Arduino</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. Reservas de Pines para Futuras Expansiones</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Pines Reservados</th>
+          <th>Componentes a Integrar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>A0 y A1</b></td>
+          <td>Sensores Reflectivos Infrarrojos TCRT5000 (Modo 3 Seguidor de Línea) o Servomotores.</td>
+        </tr>
+        <tr>
+          <td><b>A2 y A3</b></td>
+          <td>Módulo DFPlayer Mini MP3 (SoftwareSerial RX/TX para Audio).</td>
+        </tr>
+        <tr>
+          <td><b>A4 (SDA) y A5 (SCL)</b></td>
+          <td>Bus I2C compartido en paralelo para Pantalla OLED SSD1306 y Controlador PCA9685.</td>
+        </tr>
+        <tr>
+          <td><b>Pin 13</b></td>
+          <td>Pin Digital Libre para funciones auxiliares.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warning">
+      <h3>Recomendación de Seguridad Física</h3>
+      <p>Para resistir choques e impactos en combate:</p>
+      <ul>
+        <li>Fija los mazos de cables al chasis utilizando cinchos plásticos (abrazaderas).</li>
+        <li>Aplica gotas de silicona caliente sobre la base plástica de los jumpers conectados al Arduino y Protoboard.</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>
